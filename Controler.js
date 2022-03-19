@@ -81,8 +81,7 @@ class Controler {
                 this.mouseControllerDatas = mouseController(this.mouseControllerDatas, evt);
                 break;
             case "touchstart":
-                this.keyBoardControllerDatas.keyDown.up = false;
-                this.keyBoardControllerDatas.keyUp.up = true;
+                document.querySelector("#GraphicsBox").requestFullscreen();
                 break;
             default:{}
         }
