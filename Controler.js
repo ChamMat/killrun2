@@ -59,6 +59,7 @@ class Controler {
         eventCatcher.addEventListener("mousedown", this.handleEvent);
         eventCatcher.addEventListener("mouseup", this.handleEvent);
 
+        eventCatcher.addEventListener("touchstart", this.handleEvent);
         this.preloaderStart();
     }
 
@@ -78,6 +79,10 @@ class Controler {
                 break;
             case "mouseup":
                 this.mouseControllerDatas = mouseController(this.mouseControllerDatas, evt);
+                break;
+            case "touchstart":
+                this.keyBoardControllerDatas.keyDown.up = false;
+                this.keyBoardControllerDatas.keyUp.up = true;
                 break;
             default:{}
         }
