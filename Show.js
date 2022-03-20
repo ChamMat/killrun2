@@ -41,8 +41,8 @@ class Show {
     }
 
     cameraMove = (scale, img, x, y, w , h ,sx = 0, sy = 0, sw = w, sh = h) => {
-        let newX = x - this.camera.x;
-        let newY = y - this.camera.y;
+        let newX = Math.floor(x - this.camera.x);
+        let newY = Math.floor(y - this.camera.y);
 
         if (!scale){
             this.canvas.scale(-1, 1);
@@ -56,7 +56,7 @@ class Show {
         this.canvas.fillRect(0,0, 896, 592);
     }
 
-    gameBackground = (level, map) => {
+    gameBackground = (level, map, tilesDecoration) => {
         
         if (this.datas[level].background.length === 0){
             this.clear();
@@ -73,22 +73,45 @@ class Show {
 
             const {x, y} = tile;
 
-            this.cameraMove(true, img, x, y, 32, 32)
+            if (x > this.camera.x - 32 && x < this.camera.x + this.windowSize.w + 32)
+            {
 
-            if (map[maptile].type === "concret"){
-                if (map[maptile].enhancement.T)this.cameraMove(true, this.imgs[`concretGroundWallT`], x, y, 32, 32);
-                if (map[maptile].enhancement.R)this.cameraMove(true, this.imgs[`concretGroundWallR`], x, y, 32, 32);
-                if (map[maptile].enhancement.B)this.cameraMove(true, this.imgs[`concretGroundWallB`], x, y, 32, 32);
-                if (map[maptile].enhancement.L)this.cameraMove(true, this.imgs[`concretGroundWallL`], x, y, 32, 32);
-                if (map[maptile].enhancement.TL)this.cameraMove(true, this.imgs[`concretGroundWallTL`], x, y, 32, 32);
-                if (map[maptile].enhancement.TR)this.cameraMove(true, this.imgs[`concretGroundWallTR`], x, y, 32, 32);
-                if (map[maptile].enhancement.BR)this.cameraMove(true, this.imgs[`concretGroundWallBR`], x, y, 32, 32);
-                if (map[maptile].enhancement.BL)this.cameraMove(true, this.imgs[`concretGroundWallBL`], x, y, 32, 32);
-                if (map[maptile].enhancement.TLext)this.cameraMove(true, this.imgs[`concretGroundWallTLext`], x, y, 32, 32);
-                if (map[maptile].enhancement.TRext)this.cameraMove(true, this.imgs[`concretGroundWallTRext`], x, y, 32, 32);
-                if (map[maptile].enhancement.BLext)this.cameraMove(true, this.imgs[`concretGroundWallBLext`], x, y, 32, 32);
-                if (map[maptile].enhancement.BRext)this.cameraMove(true, this.imgs[`concretGroundWallBRext`], x, y, 32, 32);
-                
+                tile.type != "door" ? this.cameraMove(true, img, x, y, 32, 32):this.cameraMove(tile.direction, img, x, y, 32, 32, tile.door ? 0:32);
+
+                if (tile.type === "concret"){
+                    if (tile.enhancement.T)this.cameraMove(true, this.imgs[`concretGroundWallT`], x, y, 32, 32);
+                    if (tile.enhancement.R)this.cameraMove(true, this.imgs[`concretGroundWallR`], x, y, 32, 32);
+                    if (tile.enhancement.B)this.cameraMove(true, this.imgs[`concretGroundWallB`], x, y, 32, 32);
+                    if (tile.enhancement.L)this.cameraMove(true, this.imgs[`concretGroundWallL`], x, y, 32, 32);
+                    if (tile.enhancement.TL)this.cameraMove(true, this.imgs[`concretGroundWallTL`], x, y, 32, 32);
+                    if (tile.enhancement.TR)this.cameraMove(true, this.imgs[`concretGroundWallTR`], x, y, 32, 32);
+                    if (tile.enhancement.BR)this.cameraMove(true, this.imgs[`concretGroundWallBR`], x, y, 32, 32);
+                    if (tile.enhancement.BL)this.cameraMove(true, this.imgs[`concretGroundWallBL`], x, y, 32, 32);
+                    if (tile.enhancement.TLext)this.cameraMove(true, this.imgs[`concretGroundWallTLext`], x, y, 32, 32);
+                    if (tile.enhancement.TRext)this.cameraMove(true, this.imgs[`concretGroundWallTRext`], x, y, 32, 32);
+                    if (tile.enhancement.BLext)this.cameraMove(true, this.imgs[`concretGroundWallBLext`], x, y, 32, 32);
+                    if (tile.enhancement.BRext)this.cameraMove(true, this.imgs[`concretGroundWallBRext`], x, y, 32, 32);
+                    
+                }
+            }
+
+        }
+
+        for (let tileDecoration in tilesDecoration){
+            const deco = tilesDecoration[tileDecoration];
+            if (deco.x > this.camera.x - 32 && deco.x < this.camera.x + this.windowSize.w + 32)
+            {
+                this.cameraMove(true, this.imgs[deco.type], deco.x, deco.y, 32, 32)
+            }
+        }
+    }
+
+    gameBackgroundExt = (tilesExt) => {
+        for (let tileExt in tilesExt){
+            const tile = tilesExt[tileExt];
+
+            if (tile.x > this.camera.x - 32 && tile.x < this.camera.x + this.windowSize.w + 32){
+                this.cameraMove(true, this.imgs[tile.type], tile.x, tile.y, 32, 32);
             }
         }
     }
@@ -97,22 +120,24 @@ class Show {
         for(let key in personnages){
             const perso = personnages[key];
             if (perso.show){
-            const img = this.animations[perso.name].sprite;
-            let x = perso.x;
-            const y = perso.y;
-            const w = 32;
-            const h = 32;
-            const sx = perso.json[`${perso.action}-${perso.frameNbr}`].frame.x
-            const sy = perso.json[`${perso.action}-${perso.frameNbr}`].frame.y
-            let scale = true;
+                const img = this.animations[perso.name].sprite;
+                let x = perso.x;
+                const y = perso.y;
+                const w = 32;
+                const h = 32;
+                const sx = perso.json[`${perso.action}-${perso.frameNbr}`].frame.x
+                const sy = perso.json[`${perso.action}-${perso.frameNbr}`].frame.y
+                let scale = true;
 
-            if(!perso.direction){
-                scale = false;
-                // this.canvas.scale(-1, 1);
-                // x = (x *(-1)) - 32 // Déplace légérement x pour que le personnage reste à la même position
-            }
+                if(!perso.direction){
+                    scale = false;
+                    // this.canvas.scale(-1, 1);
+                    // x = (x *(-1)) - 32 // Déplace légérement x pour que le personnage reste à la même position
+                }
 
-            this.cameraMove(scale, img, x, y, 32, 32, sx, sy);
+                if (x > this.camera.x - 32 && x < this.camera.x + this.windowSize.w + 32){
+                    this.cameraMove(scale, img, x, y, 32, 32, sx, sy);
+                }
             }
 
         }

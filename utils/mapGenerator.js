@@ -5,6 +5,8 @@ import BodyGuard from "../gameObjects/BodyGuard.js";
 
 const mapGenerator = (levelDatas) => {
     let tiles = {};
+    let tilesDecoration = {};
+    let tilesExt = {};
     let personnages = {};
     let personnagesId = 0;
     const yLength = levelDatas.length;
@@ -15,16 +17,41 @@ const mapGenerator = (levelDatas) => {
             const tileKey = levelDatas[y][x];
 
             let tile;
+            let tileDecoration;
+            let tileExt;
             let personnage;
 
             // On va regarder le chiffre des dizaines afin de connaitre la "famille" de la case
             switch(tileKey.toString()[0]){
                 case "1":
-                    tile = mapKey[tileKey];
-                    if (tile != null){
+                    // Tiles de mur ou de sol
+                    if (mapKey[tileKey] != null){
+                    
+                        tile = mapKey[tileKey];
+                        tile === "doorLeft" ? tile = "door" : "";
                         tiles = {
                             ...tiles,
-                            [`x${x}y${y}`]: new Tiles(`x${x}y${y}`, tile, x * 32, y * 32),
+                            [`x${x}y${y}`]: new Tiles(`x${x}y${y}`, tile, x * 32, y * 32, true, tile === "door"? true : false),
+                        }
+                    }
+                    break;
+                case "2":
+                    // Tiles décoratives
+                    tileDecoration = mapKey[tileKey];
+                    if (tileDecoration != null){
+                        tilesDecoration = {
+                            ...tilesDecoration,
+                            [`x${x}y${y}`]: new Tiles(`x${x}y${y}`, tileDecoration, x * 32, y * 32, false),
+                        }
+                    }
+                    break;
+                case "3":
+                    // Tiles décorative ext (affiché par dessu les personnages)
+                    tileExt = mapKey[tileKey];
+                    if (tileExt != null){
+                        tilesExt = {
+                            ...tilesExt,
+                            [`x${x}y${y}`]: new Tiles(`x${x}y${y}`, tileExt, x * 32, y * 32, false),
                         }
                     }
                     break;
@@ -56,7 +83,7 @@ const mapGenerator = (levelDatas) => {
         }
     }
 
-    return [tiles,personnages];
+    return [tiles,personnages, tilesDecoration, tilesExt];
 }
 
 export default mapGenerator;

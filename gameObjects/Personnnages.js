@@ -94,6 +94,7 @@ class Personnage {
             let x = Math.floor(coordonate.x /32);
             let y = Math.floor(coordonate.y / 32);
 
+            const tile = map[`x${x}y${y}`];
             // switch(direction){
             //     case "up":
             //         y -=1;
@@ -110,7 +111,11 @@ class Personnage {
             //     default:{}
             // }
 
-            if (map[`x${x}y${y}`]!= undefined){
+            if (tile != undefined && tile.block){
+                if (this.name === "hero" && (direction === "left" || direction === "right") && tile.type === "door"){
+                    tile.openDoor();
+                    return false;
+                }
                 return true;
             }
 
@@ -128,7 +133,6 @@ class Personnage {
         this.wallDetect.sholders.left = testingPosition(this.sholderPosition.left, "left", map);
         this.wallDetect.hands.right = testingPosition(this.handPosition.right, "right", map);
         this.wallDetect.hands.left = testingPosition(this.handPosition.left, "left", map);
-
         
     }
 
@@ -240,8 +244,8 @@ class Personnage {
                 this.y + speed < this.mapLimite[1] ? this.y += speed : "";
                 if (this.y > this.mapLimite[1] - 35){
                     this.show = false;
+                    this.death = true;
                     this.enable = false;
-                    console.log("mort")
                 }
                 break;
             case "right":
