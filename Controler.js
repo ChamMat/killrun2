@@ -7,6 +7,7 @@ import gameSettings from "./settings/gameSettings.js";
 import levelDatas from "./settings/levelDatas.js";
 
 import mapGenerator from "./utils/mapGenerator.js";
+import backgroundGenerator from "./utils/backgroundGenerator.js";
 import tileEnhancement from "./utils/tileEnhancement.js";
 
 import Game from "./Game.js";
@@ -52,7 +53,8 @@ class Controler {
         this.game;
         this.gameObjects;
         this.personnages = {};
-        this.userAgentIsComputer = true;
+        this.secondBackground;
+        this.userTerminalIsComputer = true;
     }
 
     init = () => {
@@ -75,7 +77,7 @@ class Controler {
             || navigator.userAgent.match(/BlackBerry/i)
             || navigator.userAgent.match(/Windows Phone/i)
             ){
-           this.userAgentIsComputer = false;
+           this.userTerminalIsComputer = false;
         }
         
     }
@@ -137,6 +139,8 @@ class Controler {
             this.personnages = generator[1];
             this.tilesDecoration = generator[2];
             this.tilesExt = generator[3];
+            
+            this.secondBackground = backgroundGenerator(levelDatas[this.level].secondBackground, this.mapLimites);
         }
 
         for (let personnage in this.personnages){
@@ -162,7 +166,7 @@ class Controler {
     draw = () => {
         this.camera? this.show.updateCamera(this.personnages.hero): "";
         if (this.game.map){
-            this.show.gameBackground(this.level, this.map, this.tilesDecoration);
+            this.show.gameBackground(this.level, this.map, this.tilesDecoration, this.secondBackground);
             this.show.personnages(this.personnages);
             this.show.gameBackgroundExt(this.tilesExt)
         }

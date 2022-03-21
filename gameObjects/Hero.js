@@ -142,7 +142,7 @@ class Hero extends Personnage{
                 break;
             case "climbUp":
                 this.newAction = "climb";
-                this.move("up", this.moveSpeed * 0.7);
+                this.wallDetect.head.left && this.wallDetect.head.right ? "" : this.move("up", this.moveSpeed * 0.7);
                 break;
             case "onWallRight":
                 this.newAction = "onWall"

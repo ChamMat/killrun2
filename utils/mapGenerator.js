@@ -11,7 +11,8 @@ const mapGenerator = (levelDatas) => {
     let personnagesId = 0;
     const yLength = levelDatas.length;
     const xLength = levelDatas[0].length;
-    
+
+    // Chargement des "tiles"
     for (let y = 0; y < yLength; y +=1){
         for (let x = 0; x < xLength; x+=1){
             const tileKey = levelDatas[y][x];

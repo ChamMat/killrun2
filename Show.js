@@ -51,12 +51,26 @@ class Show {
         this.drawImage(img, newX, newY, w , h ,sx, sy, sw, sh);
     }
 
+    secondBackgroundMove = (secondBackground) => {
+
+        const allBuilds = secondBackground.getAllBuild();
+        
+        allBuilds.forEach(build => {
+            let newX = Math.floor(build.x- this.camera.x/2);
+
+            let newY = Math.floor(build.y + ((this.cameraLimite.max[1]-this.camera.y)/2));
+            this.drawImage(this.imgs[build.name], newX, newY, build.w , build.h);
+        })
+
+
+    }
+
     clear = () => {
         this.canvas.fillstyle = "#000";
         this.canvas.fillRect(0,0, 896, 592);
     }
 
-    gameBackground = (level, map, tilesDecoration) => {
+    gameBackground = (level, map, tilesDecoration, secondBackground) => {
         
         if (this.datas[level].background.length === 0){
             this.clear();
@@ -64,6 +78,11 @@ class Show {
             this.datas[level].background.forEach(background => {
                 this.drawImage(this.imgs[background], 0, 0, 896, 592)
             });
+
+            for (let key in secondBackground){
+
+                this.secondBackgroundMove(secondBackground[key]);
+            }
         }
 
         for (let maptile in map){
