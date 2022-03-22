@@ -83,6 +83,10 @@ class Show {
 
                 this.secondBackgroundMove(secondBackground[key]);
             }
+
+            this.datas[level].fog.forEach(fog => [
+                this.drawImage(this.imgs[fog], 0,0,896,592)
+            ])
         }
 
         for (let maptile in map){

@@ -25,6 +25,7 @@ const levelDatas = [
         background: [],
         secondBackground: [""],
         backgroundAnimation: [""],
+        fog: ["fog"],
         camera: false,
     },
     {
@@ -60,6 +61,7 @@ const levelDatas = [
         background: ["background"],
         secondBackground: "wallBuildBackground",
         backgroundAnimation: [""],
+        fog: ["fog"],
         camera: true,
     },
     {
@@ -80,6 +82,7 @@ const levelDatas = [
         background: ["background"],
         secondBackground: [""],
         backgroundAnimation: [""],
+        fog: ["fog"],
         camera: false,
     },
     {
@@ -111,6 +114,7 @@ const levelDatas = [
         background: ["background"],
         secondBackground: "wallBuildBackground",
         backgroundAnimation: [""],
+        fog: ["fog"],
         camera: true,
     },
     {
@@ -154,6 +158,7 @@ const levelDatas = [
         background: ["background"],
         secondBackground: "wallBuildBackground",
         backgroundAnimation: [""],
+        fog: ["fog"],
         camera: true,
     },
 ]
