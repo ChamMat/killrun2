@@ -12,7 +12,10 @@ class Personnage {
         this.enable = true;
         this.show = true;
         this.death = false;
-        this.posName = `x${Math.floor(x * 32)}y${Math.floor(y*32)}`;
+        this.posName = {
+            x: Math.floor(this.x / 32),
+            y: Math.floor(this.y / 32),
+        }
 
         this.headPosition = {
             left: {x: x+15, y: y+2},
@@ -227,7 +230,10 @@ class Personnage {
             right: {x: this.x + 21, y: this.y + 31},
         }
 
-        this.posName = `x${Math.floor(this.x * 32)}y${Math.floor(this.y*32)}`;
+        this.posName = {
+            x: Math.floor(this.x / 32),
+            y: Math.floor(this.y / 32),
+        }
     }
 
     upLoadAction = (action) => {

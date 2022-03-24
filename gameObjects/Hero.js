@@ -206,8 +206,7 @@ class Hero extends Personnage{
                             perso.headPosition.right.x,
                             perso.headPosition.left.y
                         )){
-                            perso.death = true;
-                            perso.newAction = "death"
+                            perso.deathFunc();
                             this.jumpPower = this.killJump;
                             this.chuteSpeed = 0;
                             break;

@@ -161,6 +161,10 @@ class Show {
                 if (x > this.camera.x - 32 && x < this.camera.x + this.windowSize.w + 32){
                     this.cameraMove(scale, img, x, y, 32, 32, sx, sy);
                 }
+
+                if (perso.interogatif){
+                    this.cameraMove(true, this.imgs["interogation"], x, y-32, 32, 32)
+                }
             }
 
         }

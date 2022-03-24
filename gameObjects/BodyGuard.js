@@ -8,6 +8,7 @@ class BodyGuard extends Personnage{
         this.mentalTimer = 10000;
         this.limiteMentalTimer = Math.floor(Math.random()*6000)+2000;
         this.moveSpeed = Math.floor(Math.random()*(2))+.5;
+        this.interogatif = false;
 
     }
 
@@ -15,7 +16,7 @@ class BodyGuard extends Personnage{
         if (this.enable){
             if (!this.death){
                 this.wallPosition(map);
-                this.intelligence(hero);
+                this.intelligence(hero, map);
                 this.gravity(gameSettings.gravity);
                 this.animation(gameSettings.gameSpeed);
                 this.updatePosition();  
@@ -28,20 +29,60 @@ class BodyGuard extends Personnage{
 
     intelligence = (hero, map) => {
         
+        const visionLimite = 10;
+        const tempsReaction = 1000;
+
+        if (this.posName.y === hero.posName.y){
+
+            if (this.direction){
+                for (let x = 0; x < visionLimite; x +=1){
+                    if (this.posName.x + x === hero.posName.x){
+                        this.interogatif = true;
+                        this.mental = "calme";
+                        this.mentalTimer = 0;
+                        this.limiteMentalTimer = tempsReaction;
+                        x = visionLimite;
+                    }else {
+                        if (map[`x${this.posName.x + x}y${this.posName.y}`] != undefined){
+                            x = visionLimite;
+                        }
+                    }
+                }
+            }
+            if (!this.direction){
+                for (let x = 0; x < visionLimite; x +=1){
+                    if (this.posName.x - x === hero.posName.x){
+                        this.interogatif = true;
+                        this.mental = "calme";
+                        this.mentalTimer = 0;
+                        this.limiteMentalTimer = tempsReaction;
+                        x = visionLimite;
+                    }else {
+                        if (map[`x${this.posName.x - x}y${this.posName.y}`] != undefined){
+                            x = visionLimite;
+                        }
+                    }
+                }
+            }
+        }
+
         let rand = Math.floor(Math.random()*2);
 
         if (this.mentalTimer >= this.limiteMentalTimer){
-            switch(rand){
-                case 0:
-                    this.mental= "calme";
-                    Math.floor(Math.random()*2) === 0 ? this.direction = true: this.direction = false;
-                    break;
-                case 1:
-                    this.mental = "ennuie"
-                    Math.floor(Math.random()*2) === 0 ? this.direction = true: this.direction = false;
-                    break;
+            if (!this.interogatif){
+                switch(rand){
+                    case 0:
+                        this.mental= "calme";
+                        Math.floor(Math.random()*2) === 0 ? this.direction = true: this.direction = false;
+                        break;
+                    case 1:
+                        this.mental = "ennuie"
+                        Math.floor(Math.random()*2) === 0 ? this.direction = true: this.direction = false;
+                        break;
+                }
             }
             this.limiteMentalTimer = Math.floor(Math.random()*6000)+2000;
+            this.interogatif = false;
             this.mentalTimer = 0;
         }else{
             this.mentalTimer += 25;
@@ -82,6 +123,12 @@ class BodyGuard extends Personnage{
                 this.newAction = "idle";
                 break;
         }
+    }
+
+    deathFunc = () => {
+        this.death = true;
+        this.newAction = "death";
+        this.interogatif = false;
     }
 
 }
