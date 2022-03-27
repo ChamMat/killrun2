@@ -9,6 +9,8 @@ class BodyGuard extends Personnage{
         this.limiteMentalTimer = Math.floor(Math.random()*6000)+2000;
         this.moveSpeed = Math.floor(Math.random()*(2))+.5;
         this.interogatif = false;
+        this.interogatifTimer = 0;
+        this.alerte = false;
 
     }
 
@@ -31,45 +33,50 @@ class BodyGuard extends Personnage{
         
         const visionLimite = 10;
         const tempsReaction = 1000;
+        const interogatifLimite = 25;
 
+        // Vision du perso
         if (this.posName.y === hero.posName.y){
 
-            if (this.direction){
-                for (let x = 0; x < visionLimite; x +=1){
-                    if (this.posName.x + x === hero.posName.x){
+            if (
+                (this.direction && this.posName.x < hero.posName.x) || 
+                (!this.direction && this.posName.x > hero.posName.x)
+            )
+            {
+                for (
+                    let x = 0;
+                    Math.abs(x) < visionLimite;
+                    this.direction ? x +=1: x -=1
+                    ){
+                        // Le personnage vois le hero
+                    if (parseInt(this.posName.x + x) === hero.posName.x){    
                         this.interogatif = true;
                         this.mental = "calme";
                         this.mentalTimer = 0;
-                        this.limiteMentalTimer = tempsReaction;
-                        x = visionLimite;
+                        this.limiteMentalTimer = tempsReaction
+                        this.interogatifTimer +=1;
+                        x += visionLimite
+                        break;
                     }else {
-                        if (map[`x${this.posName.x + x}y${this.posName.y}`] != undefined){
-                            x = visionLimite;
+                        // La vision est bloqué par un obstacle
+                        if (map[`x${parseInt(this.posName.x + x)}y${this.posName.y}`] != undefined){
+                            this.interogatifTimer = 0;
+                            break;
                         }
                     }
                 }
-            }
-            if (!this.direction){
-                for (let x = 0; x < visionLimite; x +=1){
-                    if (this.posName.x - x === hero.posName.x){
-                        this.interogatif = true;
-                        this.mental = "calme";
-                        this.mentalTimer = 0;
-                        this.limiteMentalTimer = tempsReaction;
-                        x = visionLimite;
-                    }else {
-                        if (map[`x${this.posName.x - x}y${this.posName.y}`] != undefined){
-                            x = visionLimite;
-                        }
-                    }
+
+                if (this.interogatifTimer >= interogatifLimite || this.alerte){
+                    this.alerte = true;
                 }
             }
+
         }
 
         let rand = Math.floor(Math.random()*2);
 
         if (this.mentalTimer >= this.limiteMentalTimer){
-            if (!this.interogatif){
+            if (!this.interogatif && !this.alerte){
                 switch(rand){
                     case 0:
                         this.mental= "calme";
@@ -87,6 +94,7 @@ class BodyGuard extends Personnage{
         }else{
             this.mentalTimer += 25;
         }
+
 
         switch(this.mental){
             case "calme":
@@ -129,6 +137,7 @@ class BodyGuard extends Personnage{
         this.death = true;
         this.newAction = "death";
         this.interogatif = false;
+        this.alerte = false;
     }
 
 }

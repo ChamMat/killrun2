@@ -231,8 +231,8 @@ class Personnage {
         }
 
         this.posName = {
-            x: Math.floor(this.x / 32),
-            y: Math.floor(this.y / 32),
+            x: Math.floor(parseInt(this.x + 16 ) / 32),
+            y: Math.floor(parseInt(this.y + 16) / 32),
         }
     }
 

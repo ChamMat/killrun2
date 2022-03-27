@@ -162,8 +162,12 @@ class Show {
                     this.cameraMove(scale, img, x, y, 32, 32, sx, sy);
                 }
 
-                if (perso.interogatif){
+                if (perso.interogatif && !perso.alerte){
                     this.cameraMove(true, this.imgs["interogation"], x, y-32, 32, 32)
+                }
+                if (perso.alerte){
+                    this.cameraMove(true, this.imgs["exclamation"], x, y-32, 32, 32)
+
                 }
             }
 
