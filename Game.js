@@ -3,6 +3,7 @@ class Game {
     {
         this.gameStatu = "start";
         this.map = false;
+        this.deathOfHero = false;
     }
 
     init = (gameStatu) => {
@@ -16,6 +17,9 @@ class Game {
             if (perso.enable){
                 if (perso.name === "hero"){
                     perso.update(gameSpeed, map, keyBoardController.keyDown, personnages);
+                    if (perso.death){
+                        setTimeout(() => {this.deathOfHero = true}, 1000);
+                    }
                 }else{
                     let ia = {
                         up:false,
@@ -31,6 +35,7 @@ class Game {
             // }
         }
     }
+
 }
 
 export default Game;

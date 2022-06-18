@@ -7,7 +7,7 @@ class BodyGuard extends Personnage{
         this.mental = "calme";
         this.mentalTimer = 10000;
         this.limiteMentalTimer = Math.floor(Math.random()*6000)+2000;
-        this.moveSpeed = Math.floor(Math.random()*(2))+.5;
+        this.moveSpeed = Math.floor(Math.random()*(3))+.5;
         this.interogatif = {
             bool: false,
             timer: 0,
@@ -33,20 +33,18 @@ class BodyGuard extends Personnage{
                 this.animation(gameSettings.gameSpeed);
                 this.updatePosition();  
             }else{
+                this.wallPosition(map);
                 this.gravity(gameSettings.gravity);
+                this.newAction = "death";
                 this.animation(gameSettings.gameSpeed);
+                this.updatePosition();
             }
         }
     }
 
-    intelligence = (hero, map) => {
-        
-        const visionLimite = 10;
-
-        this.heroEnVu = false;
-
-        // Vision du perso
-        if (this.posName.y === hero.posName.y){
+    look = (hero, map, visionLimite = 10) => {
+         // Vision du perso
+         if (this.posName.y === hero.posName.y){
 
             if (
                 (this.direction && this.posName.x < hero.posName.x) || 
@@ -60,70 +58,32 @@ class BodyGuard extends Personnage{
                     ){
                         // Le personnage vois le hero
                     if (parseInt(this.posName.x + x) === hero.posName.x){
-                        this.heroEnVu = true;
-                        x += visionLimite
-                        break;
+                        return true;
                     }else {
                         // La vision est bloqué par un obstacle
                         if (map[`x${parseInt(this.posName.x + x)}y${this.posName.y}`] != undefined){
-                            this.heroEnVu = false;
-                            break;
+                            return false;
+                            // break;
                         }
                     }
                 }
+
+                return false;
             }
         }
+    }
+
+    intelligence = (hero, map) => {
+
+        this.heroEnVu = this.look(hero, map);
+
+       
 
         if (this.heroEnVu){
            this.heroDetecte();
         }
 
-        if (this.interogatif.bool && !this.heroEnVu){
-            this.interogatif.forgotTimer +=1;
-            if (this.interogatif.forgotTimer >= this.interogatif.forgotLimit){
-                this.interogatif.bool = 0;
-                this.interogatif.timer = 0;
-                this.mentalTimer = this.limiteMentalTimer;
-            }
-        }
-
-        if (!this.interogatif.bool && !this.alerte.bool){
-            let rand;
-            if (this.interogatif.forgotTimer === 0){
-                rand = Math.floor(Math.random()*2);
-            }else {
-                rand = 1;
-            }
-
-            if (this.mentalTimer >= this.limiteMentalTimer){
-                if (!this.interogatif.bool && !this.alerte.bool){
-                    switch(rand){
-                        case 0:
-                            this.mental= "calmeIdle";
-                            if (this.interogatif.forgotTimer === 0){
-                                Math.floor(Math.random()*2) === 0 ? this.direction = true: this.direction = false;
-                            }else {
-                                this.interogatif.forgotTimer = 0;
-                            }
-                            break;
-                        case 1:
-                            this.mental = "calmeMarche"
-                            if (this.interogatif.forgotTimer === 0){
-                                Math.floor(Math.random()*2) === 0 ? this.direction = true: this.direction = false;
-                            }else {
-                                this.interogatif.forgotTimer = 0;
-                            }
-                            break;
-                    }
-                }
-                this.limiteMentalTimer = Math.floor(Math.random()*6000)+2000;
-                this.interogatif.bool = false;
-                this.mentalTimer = 0;
-            }else{
-                this.mentalTimer += 25;
-            }
-        }
-
+        this.calmeMove();
 
         switch(this.mental){
             case "calmeIdle":
@@ -135,9 +95,90 @@ class BodyGuard extends Personnage{
 
                 this.upLoadAction("walk");
                 break;
+            case "alerte":
+                if (this.direction){
+                        if (map[`x${this.posName.x + 1}y${this.posName.y}`] === undefined){
+                            this.upLoadAction("walk");
+                        }else {
+                            if (
+                                Math.floor(Math.random()*2) === 0 &&
+                                map[`x${this.posName.x + 1}y${this.posName.y - 1}`] != undefined
+                            ){
+                                this.direction = false;
+                                this.upLoadAction("walk");
+                            }else {
+                                this.upLoadAction("jump");
+                            }
+                        }
+                }
+                if (!this.direction){
+                        if (map[`x${this.posName.x - 1}y${this.posName.y}`] === undefined){
+                            this.upLoadAction("walk");
+                        }else {
+                            if (
+                                Math.floor(Math.random()*2) === 0 &&
+                                map[`x${this.posName.x - 1}y${this.posName.y - 1}`] != undefined
+                            ){
+                                this.direction = true;
+                                this.upLoadAction("walk");
+                            }else {
+                                this.upLoadAction("jump");
+                            }
+                        }
+                }
+            break;
         }
 
 
+    }
+
+    calmeMove = () => {
+                // Il a vu le hero mais ne le vois plus. Il est calme
+                if (this.interogatif.bool && !this.heroEnVu){
+                    this.interogatif.forgotTimer +=1;
+                    if (this.interogatif.forgotTimer >= this.interogatif.forgotLimit){
+                        this.interogatif.bool = 0;
+                        this.interogatif.timer = 0;
+                        this.mentalTimer = this.limiteMentalTimer;
+                    }
+                }
+        
+                if (!this.interogatif.bool && !this.alerte.bool){
+                    let rand;
+                    if (this.interogatif.forgotTimer === 0){
+                        rand = Math.floor(Math.random()*2);
+                    }else {
+                        rand = 1;
+                    }
+        
+                    if (this.mentalTimer >= this.limiteMentalTimer){
+                        if (!this.interogatif.bool && !this.alerte.bool){
+                            switch(rand){
+                                case 0:
+                                    this.mental= "calmeIdle";
+                                    if (this.interogatif.forgotTimer === 0){
+                                        Math.floor(Math.random()*2) === 0 ? this.direction = true: this.direction = false;
+                                    }else {
+                                        this.interogatif.forgotTimer = 0;
+                                    }
+                                    break;
+                                case 1:
+                                    this.mental = "calmeMarche"
+                                    if (this.interogatif.forgotTimer === 0){
+                                        Math.floor(Math.random()*2) === 0 ? this.direction = true: this.direction = false;
+                                    }else {
+                                        this.interogatif.forgotTimer = 0;
+                                    }
+                                    break;
+                            }
+                        }
+                        this.limiteMentalTimer = Math.floor(Math.random()*6000)+2000;
+                        this.interogatif.bool = false;
+                        this.mentalTimer = 0;
+                    }else{
+                        this.mentalTimer += 25;
+                    }
+                }
     }
 
     heroDetecte = () => {
@@ -151,12 +192,15 @@ class BodyGuard extends Personnage{
                 this.interogatif.timer = 0;
                 this.interogatif.bool = false;
                 this.alerte.bool = true;
+                this.moveSpeed += 2;
             }
         }
 
         if (this.alerte.bool){
+            this.mental = "alerte";
             this.alerte.show = true;
             this.alerte.timer = 0;
+            
         }
     }
     
@@ -187,6 +231,8 @@ class BodyGuard extends Personnage{
         this.newAction = "death";
         this.interogatif.bool = false;
         this.alerte.bool = false;
+        this.jump = false;
+        this.jumpPower = 0;
     }
 
 }

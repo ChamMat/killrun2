@@ -159,8 +159,15 @@ class Controler {
             clearInterval(this.interval);
             console.log("stop");
         }
-        this.game.update(this.personnages, gameSettings, this.map, this.keyBoardControllerDatas);
-        this.draw();
+        if (!this.game.deathOfHero){
+            this.game.update(this.personnages, gameSettings, this.map, this.keyBoardControllerDatas);
+            this.draw();
+        }else {
+            clearInterval(this.interval);
+            this.game = new Game();
+            this.startGame();
+        }
+        
     }
 
     draw = () => {

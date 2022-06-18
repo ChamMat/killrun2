@@ -11,19 +11,41 @@ class Hero extends Personnage{
 
         this.moveSpeed = 5;
         this.personnages;
+        this.hasKillAEnnemy = false;
 
     }
 
     update = (gameSettings, map, intelligence, personnages) => {
-        
         this.personnages = personnages;
         this.wallPosition(map);
-        this.intelligence(intelligence);
+        if (!this.death){
+            this.intelligence(intelligence);
+            this.combat(personnages);
+        }
         this.gravity(gameSettings.gravity);
+        if (this.death){
+            this.newAction = "death";
+        }
         this.animation(gameSettings.gameSpeed);
         this.updatePosition();  
     }
 
+    combat = (personnages) => {
+        for(let key in personnages){
+            if (key != "hero"){
+                if (
+                    !personnages[key].death &&
+                    personnages[key].posName.x === this.posName.x &&
+                    personnages[key].posName.y === this.posName.y
+                ){
+                    if (!this.hasKillAEnnemy){
+                        this.death = true;
+                        this.newAction = "death"
+                    }
+                }
+            }
+        }
+    }
 
     intelligence = (intelligence) => {
 
@@ -209,6 +231,10 @@ class Hero extends Personnage{
                             perso.deathFunc();
                             this.jumpPower = this.killJump;
                             this.chuteSpeed = 0;
+                            this.hasKillAEnnemy = true;
+                            setTimeout(()=> {
+                                this.hasKillAEnnemy = false;
+                            }, 100)
                             break;
                         }
                         

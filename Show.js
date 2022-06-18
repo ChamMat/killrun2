@@ -166,8 +166,12 @@ class Show {
                     if (perso.interogatif.bool && !perso.alerte.bool){
                         this.cameraMove(true, this.imgs["interogation"], x, y-32, 32, 32)
                     }
-                    if (perso.alerte.show){
+                    if (perso.alerte.bool){
                         this.cameraMove(true, this.imgs["exclamation"], x, y-32, 32, 32)
+                    }
+
+                    if(perso.death){
+                        
                     }
                 }
             }
