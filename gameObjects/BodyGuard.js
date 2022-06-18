@@ -11,7 +11,7 @@ class BodyGuard extends Personnage{
         this.interogatif = {
             bool: false,
             timer: 0,
-            limite: 25,
+            limite: 15,
             forgotTimer: 0,
             forgotLimit: 45,
         }
@@ -62,7 +62,9 @@ class BodyGuard extends Personnage{
                         return true;
                     }else {
                         // La vision est bloqué par un obstacle
-                        if (map[`x${parseInt(this.posName.x + x)}y${this.posName.y}`] != undefined){
+                        if (map[`x${parseInt(this.posName.x + x)}y${this.posName.y}`] != undefined &&
+                            map[`x${parseInt(this.posName.x + x)}y${this.posName.y}`].block
+                        ){
                             return false;
                             // break;
                         }
@@ -98,7 +100,9 @@ class BodyGuard extends Personnage{
                 break;
             case "alerte":
                 if (this.direction){
-                        if (map[`x${this.posName.x + 1}y${this.posName.y}`] === undefined){
+                        if (map[`x${this.posName.x + 1}y${this.posName.y}`] === undefined ||
+                            map[`x${this.posName.x + 1}y${this.posName.y}`].type === "door"
+                        ){
                             this.upLoadAction("walk");
                         }else {
                             if (
@@ -113,7 +117,9 @@ class BodyGuard extends Personnage{
                         }
                 }
                 if (!this.direction){
-                        if (map[`x${this.posName.x - 1}y${this.posName.y}`] === undefined){
+                        if (map[`x${this.posName.x - 1}y${this.posName.y}`] === undefined ||
+                            map[`x${this.posName.x - 1}y${this.posName.y}`].type === "door"
+                        ){
                             this.upLoadAction("walk");
                         }else {
                             if (

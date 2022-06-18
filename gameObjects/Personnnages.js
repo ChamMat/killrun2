@@ -116,7 +116,7 @@ class Personnage {
             // }
 
             if (tile != undefined && tile.block){
-                if (this.name === "hero" && (direction === "left" || direction === "right") && tile.type === "door"){
+                if ((this.name === "hero" || this.mental === "alerte") && (direction === "left" || direction === "right") && tile.type === "door"){
                     tile.openDoor();
                     return false;
                 }

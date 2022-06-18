@@ -30,11 +30,14 @@ const mapGenerator = (levelDatas) => {
                     if (mapKey[tileKey] != null){
                     
                         tile = mapKey[tileKey];
-                        tile === "doorLeft" ? tile = "door" : "";
+                        tile === "doorLeft" ? tiles = {
+                            ...tiles,
+                            [`x${x}y${y}`]: new Tiles(`x${x}y${y}`, "door", x * 32, y * 32, true, tile === "door"? true : false),
+                        } :
                         tiles = {
                             ...tiles,
                             [`x${x}y${y}`]: new Tiles(`x${x}y${y}`, tile, x * 32, y * 32, true, tile === "door"? true : false),
-                        }
+                        };
                     }
                     break;
                 case "2":

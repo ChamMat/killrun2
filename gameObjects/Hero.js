@@ -207,7 +207,7 @@ class Hero extends Personnage{
                 if (this.y > this.mapLimite[1] - 35){
                     this.show = false;
                     this.enable = false;
-                    console.log("mort")
+                    this.death = true;
                 }
                 break;
             case "right":

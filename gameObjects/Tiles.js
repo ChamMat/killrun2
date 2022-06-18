@@ -32,7 +32,7 @@ class Tiles {
             this.door = true;
             this.block = true;
             clearInterval(this.interval);
-        }, 2000);
+        }, 4000);
     }
 
     setEnhancement = (enhancement) => {
