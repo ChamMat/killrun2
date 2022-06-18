@@ -42,7 +42,7 @@ class Controler {
         }
         this.imgs;
         this.animations;
-        this.level = 4;
+        this.level = 1;
         this.map;
         this.mapLimites = [0, 0];
         this.tilesDecoration;
@@ -158,6 +158,12 @@ class Controler {
         if (this.keyBoardControllerDatas.keyDown.p){
             clearInterval(this.interval);
             console.log("stop");
+        }
+        if (this.game.newLevel){
+            this.level+=1;
+            clearInterval(this.interval);
+            this.game = new Game();
+            this.startGame();
         }
         if (!this.game.deathOfHero){
             this.game.update(this.personnages, gameSettings, this.map, this.keyBoardControllerDatas);

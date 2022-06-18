@@ -14,6 +14,7 @@ const mapKey = {
     34: "fenceRight",
     99: "hero",
     98: "bodyGuard",
+    91: "flag",
 }
 
 export default mapKey;

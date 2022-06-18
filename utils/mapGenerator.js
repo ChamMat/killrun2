@@ -2,6 +2,7 @@ import mapKey from "../settings/mapKey.js";
 import Tiles from "../gameObjects/Tiles.js";
 import Hero from "../gameObjects/Hero.js";
 import BodyGuard from "../gameObjects/BodyGuard.js";
+import Flag from "../gameObjects/Flag.js";
 
 const mapGenerator = (levelDatas) => {
     let tiles = {};
@@ -58,7 +59,6 @@ const mapGenerator = (levelDatas) => {
                     break;
                 case "9":
                     personnage = mapKey[tileKey];
-
                     if (personnage != null){
 
                         switch (personnage){
@@ -74,6 +74,12 @@ const mapGenerator = (levelDatas) => {
                                     [personnage+personnagesId]: new BodyGuard(personnage, personnagesId, x * 32, y * 32)
                                 }
                                 personnagesId +=1;
+                                break;
+                            case "flag":
+                                personnages = {
+                                    ...personnages,
+                                    ["flag"]: new Flag("flag", 0, x * 32, y* 32)
+                                }
                                 break;
                             default:{};
                         }

@@ -162,7 +162,7 @@ class Show {
                     this.cameraMove(scale, img, x, y, 32, 32, sx, sy);
                 }
 
-                if (perso.name != "hero"){
+                if (perso.ennemy){
                     if (perso.interogatif.bool && !perso.alerte.bool){
                         this.cameraMove(true, this.imgs["interogation"], x, y-32, 32, 32)
                     }

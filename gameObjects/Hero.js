@@ -12,6 +12,7 @@ class Hero extends Personnage{
         this.moveSpeed = 5;
         this.personnages;
         this.hasKillAEnnemy = false;
+        this.hadTheFlag = false;
 
     }
 
@@ -38,9 +39,13 @@ class Hero extends Personnage{
                     personnages[key].posName.x === this.posName.x &&
                     personnages[key].posName.y === this.posName.y
                 ){
-                    if (!this.hasKillAEnnemy){
+                    if (!this.hasKillAEnnemy && personnages[key].ennemy){
                         this.death = true;
                         this.newAction = "death"
+                    }
+
+                    if (personnages[key].name === "flag"){
+                        this.hadTheFlag = true;
                     }
                 }
             }
@@ -219,7 +224,7 @@ class Hero extends Personnage{
             for (let ennemy in this.personnages){
                 const perso = this.personnages[ennemy];
                 if (!perso.death){
-                    if (perso.name != "hero"){
+                    if (perso.ennemy){
                         if (testCollisionKill(
                             this.footPosition.left.x,
                             this.footPosition.right.x,

@@ -22,6 +22,7 @@ class BodyGuard extends Personnage{
             limite: 100,
         }
         this.heroEnVu = false;
+        this.ennemy = true;
     }
 
     update = (gameSettings, map, hero) => {
@@ -90,8 +91,8 @@ class BodyGuard extends Personnage{
                 this.upLoadAction("idle");
                 break;
             case "calmeMarche":
-                this.direction && this.wallDetect.hands.right ? this.direction = false : "";
-                !this.direction && this.wallDetect.hands.left ? this.direction = true : "";
+                this.direction && (this.wallDetect.hands.right || !this.wallDetect.foot.right)? this.direction = false : "";
+                !this.direction && (this.wallDetect.hands.left || !this.wallDetect.foot.left) ? this.direction = true : "";
 
                 this.upLoadAction("walk");
                 break;

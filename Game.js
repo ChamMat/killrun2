@@ -4,6 +4,7 @@ class Game {
         this.gameStatu = "start";
         this.map = false;
         this.deathOfHero = false;
+        this.newLevel = false;
     }
 
     init = (gameStatu) => {
@@ -19,6 +20,9 @@ class Game {
                     perso.update(gameSpeed, map, keyBoardController.keyDown, personnages);
                     if (perso.death){
                         setTimeout(() => {this.deathOfHero = true}, 1000);
+                    }
+                    if (perso.hadTheFlag){
+                        setTimeout(()=> {this.newLevel = true}, 1000);
                     }
                 }else{
                     let ia = {

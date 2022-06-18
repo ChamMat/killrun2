@@ -12,6 +12,7 @@ class Personnage {
         this.enable = true;
         this.show = true;
         this.death = false;
+        this.ennemy = false;
         this.posName = {
             x: Math.floor(this.x / 32),
             y: Math.floor(this.y / 32),
