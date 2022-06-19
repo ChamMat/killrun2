@@ -7,7 +7,7 @@ class BodyGuard extends Personnage{
         this.mental = "calme";
         this.mentalTimer = 10000;
         this.limiteMentalTimer = Math.floor(Math.random()*6000)+2000;
-        this.moveSpeed = Math.floor(Math.random()*(3))+.5;
+        this.moveSpeed = Math.floor(Math.random()*(2))+.5;
         this.interogatif = {
             bool: false,
             timer: 0,
@@ -102,19 +102,24 @@ class BodyGuard extends Personnage{
 
                 for (let key in personnages){
                     const perso = personnages[key];
-                    if (
-                        perso.name != "hero" &&
-                        perso.id != this.id &&
-                        !perso.alerte.bool &&
-                        perso.ennemy &&
-                        perso.posName.x === this.posName.x &&
-                        perso.posName.y === this.posName.y
-                    ){
-                        perso.interogatif.timer = 0;
-                        perso.interogatif.bool = false;
-                        perso.alerte.bool = true;
-                        perso.moveSpeed += 2;
-                        perso.mental = "alerte";
+                    try{
+                        if (
+                            !perso.death &&
+                            perso.name != "hero" &&
+                            perso.id != this.id &&
+                            !perso.alerte.bool &&
+                            perso.ennemy &&
+                            perso.posName.x === this.posName.x &&
+                            perso.posName.y === this.posName.y
+                        ){
+                            perso.interogatif.timer = 0;
+                            perso.interogatif.bool = false;
+                            perso.alerte.bool = true;
+                            perso.moveSpeed += 4;
+                            perso.mental = "alerte";
+                        }
+                    }catch(e){
+                        perso.name
                     }
                 }
                 if (this.direction){
@@ -235,7 +240,7 @@ class BodyGuard extends Personnage{
                 this.interogatif.timer = 0;
                 this.interogatif.bool = false;
                 this.alerte.bool = true;
-                this.moveSpeed += 2;
+                this.moveSpeed += 4;
             }
         }
 
