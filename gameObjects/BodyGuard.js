@@ -25,11 +25,11 @@ class BodyGuard extends Personnage{
         this.ennemy = true;
     }
 
-    update = (gameSettings, map, hero) => {
+    update = (gameSettings, map, personnages) => {
         if (this.enable){
             if (!this.death){
                 this.wallPosition(map);
-                this.intelligence(hero, map);
+                this.intelligence(personnages, map);
                 this.gravity(gameSettings.gravity);
                 this.animation(gameSettings.gameSpeed);
                 this.updatePosition();  
@@ -43,13 +43,13 @@ class BodyGuard extends Personnage{
         }
     }
 
-    look = (hero, map, visionLimite = 10) => {
+    look = (personnages, map, visionLimite = 10) => {
          // Vision du perso
-         if (this.posName.y === hero.posName.y){
+         if (this.posName.y === personnages.hero.posName.y){
 
             if (
-                (this.direction && this.posName.x < hero.posName.x) || 
-                (!this.direction && this.posName.x > hero.posName.x)
+                (this.direction && this.posName.x < personnages.hero.posName.x) || 
+                (!this.direction && this.posName.x > personnages.hero.posName.x)
             )
             {
                 for (
@@ -58,7 +58,7 @@ class BodyGuard extends Personnage{
                     this.direction ? x +=1: x -=1
                     ){
                         // Le personnage vois le hero
-                    if (parseInt(this.posName.x + x) === hero.posName.x){
+                    if (parseInt(this.posName.x + x) === personnages.hero.posName.x){
                         return true;
                     }else {
                         // La vision est bloqué par un obstacle
@@ -76,9 +76,9 @@ class BodyGuard extends Personnage{
         }
     }
 
-    intelligence = (hero, map) => {
+    intelligence = (personnages, map) => {
 
-        this.heroEnVu = this.look(hero, map);
+        this.heroEnVu = this.look(personnages, map);
 
        
 
@@ -99,11 +99,38 @@ class BodyGuard extends Personnage{
                 this.upLoadAction("walk");
                 break;
             case "alerte":
+
+                for (let key in personnages){
+                    const perso = personnages[key];
+                    if (
+                        perso.name != "hero" &&
+                        perso.id != this.id &&
+                        !perso.alerte.bool &&
+                        perso.ennemy &&
+                        perso.posName.x === this.posName.x &&
+                        perso.posName.y === this.posName.y
+                    ){
+                        perso.interogatif.timer = 0;
+                        perso.interogatif.bool = false;
+                        perso.alerte.bool = true;
+                        perso.moveSpeed += 2;
+                        perso.mental = "alerte";
+                    }
+                }
                 if (this.direction){
                         if (map[`x${this.posName.x + 1}y${this.posName.y}`] === undefined ||
                             map[`x${this.posName.x + 1}y${this.posName.y}`].type === "door"
                         ){
-                            this.upLoadAction("walk");
+                            if (
+                                map[`x${this.posName.x + 1}y${this.posName.y -1}`] === undefined &&
+                                map[`x${this.posName.x + 1}y${this.posName.y}`] === undefined &&
+                                map[`x${this.posName.x + 1}y${this.posName.y + 1}`] === undefined &&
+                                this.jumpPower === 0 && this.chuteSpeed === 0
+                                ){
+                                    Math.floor(Math.random()*2) === 1 ? this.direction = false : this.upLoadAction("jump");
+                            }else {
+                                this.upLoadAction("walk");
+                            }
                         }else {
                             if (
                                 Math.floor(Math.random()*2) === 0 &&
@@ -120,7 +147,16 @@ class BodyGuard extends Personnage{
                         if (map[`x${this.posName.x - 1}y${this.posName.y}`] === undefined ||
                             map[`x${this.posName.x - 1}y${this.posName.y}`].type === "door"
                         ){
-                            this.upLoadAction("walk");
+                            if (
+                                map[`x${this.posName.x - 1}y${this.posName.y -1}`] === undefined &&
+                                map[`x${this.posName.x - 1}y${this.posName.y}`] === undefined &&
+                                map[`x${this.posName.x - 1}y${this.posName.y + 1}`] === undefined &&
+                                this.jumpPower === 0 && this.chuteSpeed === 0
+                                ){
+                                    Math.floor(Math.random()*2) === 1 ? this.direction = true : this.upLoadAction("jump");
+                                }else {
+                                    this.upLoadAction("walk");
+                                }
                         }else {
                             if (
                                 Math.floor(Math.random()*2) === 0 &&

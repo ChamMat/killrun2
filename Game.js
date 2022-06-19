@@ -31,7 +31,7 @@ class Game {
                         left:false,
                         right:false,
                     }
-                    perso.update(gameSpeed, map, personnages.hero);
+                    perso.update(gameSpeed, map, personnages);
                 }
             }
             // if (perso.name === "bodyGuard"){
