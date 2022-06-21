@@ -42,7 +42,7 @@ class Controler {
         }
         this.imgs;
         this.animations;
-        this.level = 5;
+        this.level = 1;
         this.map;
         this.mapLimites = [0, 0];
         this.tilesDecoration;
