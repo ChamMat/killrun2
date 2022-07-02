@@ -109,7 +109,6 @@ class Controler {
     preloaderStart = () => {
 
         preloader.init();
-
         this.interval = setInterval(()=> {
             if(preloader.statuDuPreloader()){
                 this.imgs = preloader.imgs;
