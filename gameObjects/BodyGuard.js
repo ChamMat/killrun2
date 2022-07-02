@@ -23,6 +23,7 @@ class BodyGuard extends Personnage{
         }
         this.heroEnVu = false;
         this.ennemy = true;
+        this.alternateDeath = false;
     }
 
     update = (gameSettings, map, personnages) => {
@@ -36,7 +37,7 @@ class BodyGuard extends Personnage{
             }else{
                 this.wallPosition(map);
                 this.gravity(gameSettings.gravity);
-                this.newAction = "death";
+                this.alternateDeath ? this.newAction = "alternateDeath" : this.newAction = "death";
                 this.animation(gameSettings.gameSpeed);
                 this.updatePosition();
             }
@@ -277,6 +278,16 @@ class BodyGuard extends Personnage{
     deathFunc = () => {
         this.death = true;
         this.newAction = "death";
+        this.interogatif.bool = false;
+        this.alerte.bool = false;
+        this.jump = false;
+        this.jumpPower = 0;
+    }
+
+    alternateDeathFunc = () => {
+        this.death = true;
+        this.newAction = "alternateDeath";
+        this.alternateDeath = true;
         this.interogatif.bool = false;
         this.alerte.bool = false;
         this.jump = false;

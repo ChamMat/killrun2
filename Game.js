@@ -22,6 +22,15 @@ class Game {
                         setTimeout(() => {this.deathOfHero = true}, 1000);
                     }
                     if (perso.hadTheFlag){
+                        for (let key2 in personnages){
+                            if (personnages[key2].ennemy && !personnages[key2].death){
+                                const ennemy = personnages[key2];
+                                ennemy.interogatif.bool = false;
+                                ennemy.alerte.bool = false;
+                                // ennemy.deathFunc();
+                                ennemy.alternateDeathFunc()
+                            }
+                        }
                         setTimeout(()=> {this.newLevel = true}, 1000);
                     }
                 }else{
