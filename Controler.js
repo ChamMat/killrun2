@@ -48,6 +48,7 @@ class Controler {
         this.tilesDecoration;
         this.tilesExt;
         this.camera;
+        this.textes;
 
         this.show;
         this.game;
@@ -131,6 +132,8 @@ class Controler {
 
         if (this.level > 0){
             const generator = mapGenerator(levelDatas[this.level].map);
+            
+            this.textes =  levelDatas[this.level].text;
 
             this.map = generator[0];
             tileEnhancement(this.map, this.mapLimites);
@@ -178,9 +181,11 @@ class Controler {
     draw = () => {
         this.camera? this.show.updateCamera(this.personnages.hero): "";
         if (this.game.map){
+            
             this.show.gameBackground(this.level, this.map, this.tilesDecoration, this.secondBackground);
             this.show.personnages(this.personnages);
             this.show.gameBackgroundExt(this.tilesExt)
+            this.show.writeTexte(this.textes);
         }
         else {
             this.show.clear();

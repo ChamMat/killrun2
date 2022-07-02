@@ -139,6 +139,23 @@ class Show {
         }
     }
 
+    writeTexte = (textes) => {
+        
+        for (let i = 0; i < textes.length; i +=1){
+            if (i === 0){
+                this.canvas.fillStyle = "rgba(255,255,255,0.2)";
+                this.canvas.textAlign = "left";
+                this.canvas.font = `10px "PressStart2P-Regular"`;
+                this.canvas.fillText(textes[i], 10, 20);
+            }else {
+                this.canvas.fillStyle = "#fff";
+                this.canvas.textAlign = "center";
+                this.canvas.font = `10px "PressStart2P-Regular"`;
+                this.canvas.fillText(textes[i], 450, (30 * i));
+            }
+        }
+    }
+
     personnages = (personnages) => {
         for(let key in personnages){
             const perso = personnages[key];

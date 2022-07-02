@@ -27,6 +27,7 @@ const levelDatas = [
         backgroundAnimation: [""],
         fog: ["fog"],
         camera: false,
+        text: [],
     },
     {
         // 1
@@ -58,6 +59,7 @@ const levelDatas = [
         backgroundAnimation: [""],
         fog: ["fog"],
         camera: true,
+        text: ["Level 1", "Use A and D for walk", "Use W and S for climb wall"],
     },
     {
         //2 test
@@ -87,6 +89,7 @@ const levelDatas = [
         backgroundAnimation: [""],
         fog: ["fog"],
         camera: true,
+        text: ["Level 2", "Ennemys can see you", "jump on there head for kill them", "or just dodge them"],
     },
     {
         // 3
@@ -150,6 +153,7 @@ const levelDatas = [
         backgroundAnimation: [""],
         fog: ["fog"],
         camera: true,   
+        text: ["Level 3"],
     },
     {
         // 4
@@ -217,6 +221,7 @@ const levelDatas = [
         backgroundAnimation: [""],
         fog: ["fog"],
         camera: true,
+        text: ["Level 4", "RUN!!!!"],
     },
     {
         // 5
@@ -235,7 +240,7 @@ const levelDatas = [
             [10,10,10,10,10,10,10,10,10,10,11,21,98,21,21,10,21,21,11,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
             [10,10,10,10,10,10,10,10,10,10,14,21,21,21,21,21,21,21,11,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
             [11,10,10,10,10,10,10,11,21,11,11,11,11,11,11,21,21,21,11,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
-            [11,99,10,10,10,10,10,11,21,21,21,21,21,21,11,21,21,21,15,10,98,10,11,10,10,10,10,10,10,10,10,10,11],
+            [11,99,10,10,10,10,10,11,21,21,21,21,21,21,11,21,21,21,15,10,10,10,10,10,10,98,11,10,10,10,10,10,11],
             [11,22,23,23,23,23,24,11,11,11,11,11,11,21,11,21,21,11,11,11,11,11,11,11,11,11,11,11,11,11,10,10,11],
             [11,22,23,23,23,23,24,11,21,21,21,21,21,21,11,21,21,21,11,10,10,10,10,10,10,10,10,10,10,10,10,10,11],
             [11,22,23,23,23,23,24,11,21,10,21,21,98,21,11,21,21,21,11,10,10,10,10,10,10,10,10,10,10,10,10,11,11],
@@ -249,6 +254,7 @@ const levelDatas = [
         backgroundAnimation: [""],
         fog: ["fog"],
         camera: true,
+        text: ["Level 5", "If a ennemy spot you", "you can considere that you are dead"],
     },
     {
         //6
@@ -278,6 +284,7 @@ const levelDatas = [
         backgroundAnimation: [""],
         fog: ["fog"],
         camera: true,
+        text: ["Level 6", "Dont kill them all", "just bouncing on them for reach the goal"],
     },{
         //7
         map: 
@@ -306,6 +313,7 @@ const levelDatas = [
         backgroundAnimation: [""],
         fog: ["fog"],
         camera: true,
+        text: ["Level 7", "Same technique", "just more harder"],
     },
     {
         //8
@@ -336,6 +344,7 @@ const levelDatas = [
         backgroundAnimation: [""],
         fog: ["fog"],
         camera: true,
+        text: ["Level 8", "Jump and run"],
     },
     {
         // 9
@@ -366,6 +375,7 @@ const levelDatas = [
         backgroundAnimation: [""],
         fog: ["fog"],
         camera: true,
+        text: [""],
     },
 ]
 

@@ -7,11 +7,20 @@ const preloader = {
     animations: {},
     nombreImagesTotal: 0,
     nombreAnimTotal: 0,
+    font: {},
 
     init : () => {
         preloader.chargementImage();
         preloader.chargementAnimations();
+        preloader.chargementFont();
 
+    },
+
+    chargementFont: () => {
+        preloader.font = new FontFace('PressStart2P-Regular', 'url(./lib/fonts/PressStart2P-Regular.ttf)');
+        preloader.font.load().then(response => {
+            document.fonts.add(response);
+        });
     },
 
     chargementImage : () => {

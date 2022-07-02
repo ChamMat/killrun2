@@ -22,6 +22,7 @@ const mapGenerator = (levelDatas) => {
             let tileDecoration;
             let tileExt;
             let personnage;
+            let text;
 
             // On va regarder le chiffre des dizaines afin de connaitre la "famille" de la case
             switch(tileKey.toString()[0]){
