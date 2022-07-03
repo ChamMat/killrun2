@@ -79,6 +79,7 @@ class Controler {
         this.personnages = {};
         this.secondBackground;
         this.userTerminalIsComputer = true;
+        this.tape = 0;
 
         this.fullScreen = false;
     }
@@ -143,11 +144,12 @@ class Controler {
                 this.mouseControllerDatas = mouseController(this.mouseControllerDatas, evt);
                 break;
             case "touchstart":
-                if (!this.fullScreen){
+                if (!this.fullScreen && this.tape > 0){
                     document.querySelector("#BackgroundBox").requestFullscreen();
                     this.fullScreen = true;
 
                 }
+                this.tape +=1;
                 this.tactilControllerDatas = tactilController(this.tactilControllerDatas, evt);
                 break;
             case "touchmove":
