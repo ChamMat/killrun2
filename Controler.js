@@ -12,6 +12,7 @@ import tileEnhancement from "./utils/tileEnhancement.js";
 
 import Game from "./Game.js";
 import Show from "./Show.js";
+import tactilController from "./userInput/tactilController.js";
 
 class Controler {
     constructor(){
@@ -40,6 +41,28 @@ class Controler {
             down: false,
             up: true
         }
+
+        this.tactilControllerDatas = {
+            bool : false,
+            x : 450,
+            y : 300,
+            lastDownX: 0,
+            lastDownY: 0,
+            down: false,
+            up: true,
+            keyDown:{
+                up: false,
+                down: false,
+                left: false,
+                right: false,
+            },
+            keyUp: {
+                up: true,
+                down: true,
+                left: true,
+                right: true,
+            }
+        }
         this.imgs;
         this.animations;
         this.level = 1;
@@ -56,18 +79,27 @@ class Controler {
         this.personnages = {};
         this.secondBackground;
         this.userTerminalIsComputer = true;
+
+        this.fullScreen = false;
     }
 
     init = () => {
         const body = document.querySelector("body");
-        const eventCatcher = document.querySelector("#EventCatcher");
+        const eventCatcher = document.querySelector("body");
         body.addEventListener("keydown", this.handleEvent);
         body.addEventListener("keyup", this.handleEvent);
         eventCatcher.addEventListener("mousemove", this.handleEvent);
         eventCatcher.addEventListener("mousedown", this.handleEvent);
         eventCatcher.addEventListener("mouseup", this.handleEvent);
 
-        eventCatcher.addEventListener("touchstart", this.handleEvent);
+        eventCatcher.addEventListener("touchstart", (evt) => {
+            evt.preventDefault();
+            this.handleEvent(evt)
+        }, {passive:false}
+        );
+        eventCatcher.addEventListener("touchmove", this.handleEvent);
+        eventCatcher.addEventListener("touchend", this.handleEvent);
+
         this.preloaderStart();
 
         if( navigator.userAgent.match(/iPhone/i)
@@ -79,6 +111,10 @@ class Controler {
             || navigator.userAgent.match(/Windows Phone/i)
             ){
            this.userTerminalIsComputer = false;
+           this.tactilControllerDatas.bool = true;
+           
+        }else {
+            document.querySelector("#arraw").style.display = "none"
         }
         
     }
@@ -87,6 +123,12 @@ class Controler {
         switch(evt.type){
             case "keydown":
                 this.keyBoardControllerDatas = keyBoardController(this.keyBoardControllerDatas, evt);
+                // if (evt.code === "KeyF"){
+                //     document.querySelector("#BackgroundBox").requestFullscreen();
+                //     document.querySelector("#EventCatcher").addEventListener("mousemove", this.handleEvent);
+                //     document.querySelector("#EventCatcher").addEventListener("mousedown", this.handleEvent);
+                //     document.querySelector("#EventCatcher").addEventListener("mouseup", this.handleEvent);
+                // }
                 break;
             case "keyup":
                 this.keyBoardControllerDatas = keyBoardController(this.keyBoardControllerDatas, evt);
@@ -101,7 +143,19 @@ class Controler {
                 this.mouseControllerDatas = mouseController(this.mouseControllerDatas, evt);
                 break;
             case "touchstart":
-                document.querySelector("#GraphicsBox").requestFullscreen();
+                if (!this.fullScreen){
+                    document.querySelector("#BackgroundBox").requestFullscreen();
+                    this.fullScreen = true;
+
+                }
+                this.tactilControllerDatas = tactilController(this.tactilControllerDatas, evt);
+                break;
+            case "touchmove":
+                console.log(evt)
+                this.tactilControllerDatas = tactilController(this.tactilControllerDatas, evt);
+                break;
+            case "touchend":
+                this.tactilControllerDatas = tactilController(this.tactilControllerDatas, evt);
                 break;
             default:{}
         }
@@ -168,7 +222,7 @@ class Controler {
             this.startGame();
         }
         if (!this.game.deathOfHero){
-            this.game.update(this.personnages, gameSettings, this.map, this.keyBoardControllerDatas);
+            this.game.update(this.personnages, gameSettings, this.map, this.keyBoardControllerDatas, this.tactilControllerDatas);
             this.draw();
         }else {
             clearInterval(this.interval);
@@ -186,6 +240,9 @@ class Controler {
             this.show.personnages(this.personnages);
             this.show.gameBackgroundExt(this.tilesExt)
             this.show.writeTexte(this.textes);
+            if (!this.userTerminalIsComputer){
+                this.show.mobileInterface();
+            }
         }
         else {
             this.show.clear();

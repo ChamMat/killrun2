@@ -30,7 +30,7 @@ const keyBoardController = (keyboard, evt) => {
                     newKeyboardValue.keyUp.p = true;
                     break;
                 case "KeyF":
-                    document.querySelector("#GraphicsBox").requestFullscreen();
+                    
                     break;
                 default:{}
             }

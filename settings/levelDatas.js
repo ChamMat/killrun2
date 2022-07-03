@@ -254,7 +254,7 @@ const levelDatas = [
         backgroundAnimation: [""],
         fog: ["fog"],
         camera: true,
-        text: ["Level 5", "If a ennemy spot you", "you can considere that you are dead"],
+        text: ["Level 5", "If a ennemy spot you", "he can ask help from other ennemy"],
     },
     {
         //6
