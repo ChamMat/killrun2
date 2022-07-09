@@ -13,6 +13,11 @@ class Show {
             min: [0, 0],
             max: [0, 0],
         };
+
+        this.fullScreenAnimTimer = {
+            opacity : 0,
+            up: true,
+        };
     }
 
     init = () => {
@@ -145,6 +150,41 @@ class Show {
         // this.drawImage(this.imgs["downArraw"], 775, 488, 144 , 144);
         // this.drawImage(this.imgs["upArraw"], 775, 355, 144 , 144);
     
+    }
+
+    drawFullScreenButton = () => {
+        const x = 15;
+        const y = 50;
+        this.canvas.lineWidth = 3;
+        this.canvas.strokeStyle = `rgba(255,255,255,${this.fullScreenAnimTimer.opacity/10})`;
+        this.canvas.beginPath();
+        this.canvas.moveTo(x, y);
+        this.canvas.lineTo(x+10, y);
+        this.canvas.moveTo(x+25, y);
+        this.canvas.lineTo(x+25+10, y);
+        this.canvas.lineTo(x+25+10, y+10);
+        this.canvas.moveTo(x+25+10, y+25);
+        this.canvas.lineTo(x+25+10, y+25+10);
+        this.canvas.lineTo(x+25, y+25+10);
+        this.canvas.moveTo(x+10, y+25+10);
+        this.canvas.lineTo(x, y+25+10);
+        this.canvas.lineTo(x, y+25);
+        this.canvas.moveTo(x, y+10);
+        this.canvas.lineTo(x,y);
+        this.canvas.stroke();
+
+        if (this.fullScreenAnimTimer.up){
+            this.fullScreenAnimTimer.opacity +=.05;
+            if (this.fullScreenAnimTimer.opacity >= 3){
+                this.fullScreenAnimTimer.up = false;
+            }
+        }else {
+            this.fullScreenAnimTimer.opacity -=.05;
+            if (this.fullScreenAnimTimer.opacity <= 0){
+                this.fullScreenAnimTimer.up = true;
+            }
+        }
+
     }
 
     writeTexte = (textes) => {

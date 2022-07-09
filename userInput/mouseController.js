@@ -4,14 +4,14 @@ const mouseController = (mouse, evt) => {
 
     switch(evt.type){
         case "mousemove":
-            newMouse.x = evt.clientX;
-            newMouse.y = evt.clientY;
+            newMouse.x = evt.pageX;
+            newMouse.y = evt.pageY;
             break;
         case "mousedown":
             newMouse.down = true;
             newMouse.up = false;
-            newMouse.lastDownX = evt.clientX;
-            newMouse.lastDownY = evt.clientY;
+            newMouse.lastDownX = evt.pageX;
+            newMouse.lastDownY = evt.pageY;
             break;
         case "mouseup":
             newMouse.down = false;

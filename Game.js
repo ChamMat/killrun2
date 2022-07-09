@@ -5,6 +5,7 @@ class Game {
         this.map = false;
         this.deathOfHero = false;
         this.newLevel = false;
+        this.buttonFullScreenActive = false;
     }
 
     init = (gameStatu) => {
@@ -12,25 +13,32 @@ class Game {
         this.gameStatu === "game" ? this.map = true : this.map = false;
     }
 
-    update = (personnages, gameSpeed, map, keyBoardController, tactilController) => {
+    update = (personnages, gameSpeed, map, keyBoardController, tactilController, fullScreen) => {
+        
+        if (tactilController.x > 15 && tactilController.x < 50){
+            if (tactilController.y > 50 && tactilController.y < 95){
+                if (tactilController.down){
+                    this.buttonFullScreenActive = true;
+                }
+                if (tactilController.up && this.buttonFullScreenActive){
+                    this.buttonFullScreenActive = false;
+                    if (!fullScreen){
+                        document.querySelector("#BackgroundBox").requestFullscreen();
+                    }else {
+                        document.exitFullscreen();
+                    }
+                }
+            }
+        }
+        
+
         for (let key in personnages){
             let perso = personnages[key];
             if (perso.enable){
                 if (perso.name === "hero"){
-                    if (!tactilController.bool){
-                        perso.update(gameSpeed, map, keyBoardController.keyDown, personnages);
-                    }else {
-                        // Si on est dans le tactile, transmettre les donné d'une simulation de clavier à update
-                        perso.update(gameSpeed, map, tactilController.keyDown,personnages)
 
-                        if (tactilController.x > 0 && tactilController.x < 144 ){
-                            if (tactilController.y > 488 && tactilController.y < 600){
-                                console.log("ok")
-                            }
-                        }
+                    perso.update(gameSpeed, map, keyBoardController.keyDown, personnages);
 
-                        
-                    }
                     if (perso.death){
                         setTimeout(() => {this.deathOfHero = true}, 1000);
                     }
