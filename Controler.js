@@ -67,7 +67,7 @@ class Controler {
         }
         this.imgs;
         this.animations;
-        this.level = 1;
+        this.level = 0;
         this.map;
         this.mapLimites = [0, 0];
         this.tilesDecoration;
