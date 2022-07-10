@@ -265,7 +265,7 @@ class Controler {
                 this.startGame();
             }
             if (!this.game.deathOfHero){
-                this.game.update(this.personnages, gameSettings, this.map, this.keyBoardControllerDatas, this.tactilControllerDatas, this.fullScreen);
+                this.game.update(this.personnages, gameSettings, this.map, this.keyBoardControllerDatas, this.tactilControllerDatas, this.fullScreen ,() => {this.fullScreen = !this.fullScreen}, this.userTerminalIsComputer);
                 this.draw();
             }else {
                 clearInterval(this.interval);

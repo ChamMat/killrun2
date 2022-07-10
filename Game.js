@@ -13,7 +13,7 @@ class Game {
         this.gameStatu === "game" ? this.map = true : this.map = false;
     }
 
-    update = (personnages, gameSpeed, map, keyBoardController, tactilController, fullScreen) => {
+    update = (personnages, gameSpeed, map, keyBoardController, tactilController, fullScreen, fullScreenChange, userTerminalIsComputer) => {
         
         if (tactilController.x > 15 && tactilController.x < 50){
             if (tactilController.y > 50 && tactilController.y < 95){
@@ -23,9 +23,32 @@ class Game {
                 if (tactilController.up && this.buttonFullScreenActive){
                     this.buttonFullScreenActive = false;
                     if (!fullScreen){
-                        document.querySelector("#BackgroundBox").requestFullscreen();
+                        // if( navigator.userAgent.match(/iPhone/i)
+                        //     || navigator.userAgent.match(/webOS/i)
+                        //     || navigator.userAgent.match(/iPad/i)
+                        //     || navigator.userAgent.match(/iPod/i)
+                        //     ){
+                        //         let canvasContainer = document.querySelector('#BackgroundBox');
+                        //         canvasContainer.style.width = "100%";
+                        //         canvasContainer.style.height = "100%"
+                        //         fullScreenChange();
+                        //     }else {
+                                document.querySelector("#BackgroundBox").requestFullscreen();
+                            // }
+                        
                     }else {
-                        document.exitFullscreen();
+                        // if( navigator.userAgent.match(/iPhone/i)
+                        //     || navigator.userAgent.match(/webOS/i)
+                        //     || navigator.userAgent.match(/iPad/i)
+                        //     || navigator.userAgent.match(/iPod/i)
+                        //     ){
+                        //         let canvasContainer = document.querySelector('#BackgroundBox');
+                        //         canvasContainer.style.width = "896px";
+                        //         canvasContainer.style.height = "592px";
+                        //         fullScreenChange();
+                        //     }else {
+                                document.exitFullscreen();
+                            // }
                     }
                 }
             }
@@ -37,7 +60,11 @@ class Game {
             if (perso.enable){
                 if (perso.name === "hero"){
 
-                    perso.update(gameSpeed, map, keyBoardController.keyDown, personnages);
+                    if (userTerminalIsComputer){
+                        perso.update(gameSpeed, map, keyBoardController.keyDown, personnages);
+                    }else {
+                        perso.update(gameSpeed, map, tactilController.keyDown, personnages);
+                    }
 
                     if (perso.death){
                         setTimeout(() => {this.deathOfHero = true}, 1000);

@@ -145,10 +145,10 @@ class Show {
     }
 
     mobileInterface = () => {
-        // this.drawImage(this.imgs["leftArraw"], 0, 488, 144 , 144);
-        // this.drawImage(this.imgs["rightArraw"], 150, 488, 144 , 144);
-        // this.drawImage(this.imgs["downArraw"], 775, 488, 144 , 144);
-        // this.drawImage(this.imgs["upArraw"], 775, 355, 144 , 144);
+        this.drawImage(this.imgs["leftArraw"], 0, 488, 144 , 144);
+        this.drawImage(this.imgs["rightArraw"], 150, 488, 144 , 144);
+        this.drawImage(this.imgs["downArraw"], 775, 488, 144 , 144);
+        this.drawImage(this.imgs["upArraw"], 775, 355, 144 , 144);
     
     }
 

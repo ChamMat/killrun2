@@ -44,7 +44,7 @@ class BodyGuard extends Personnage{
         }
     }
 
-    look = (personnages, map, visionLimite = 10) => {
+    look = (personnages, map, visionLimite = 12) => {
          // Vision du perso
          if (this.posName.y === personnages.hero.posName.y){
 
