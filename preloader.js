@@ -1,10 +1,13 @@
 import animationList from "./lib/animationList.js";
 import imagesList from "./lib/imagesList.js";
+import soundList from "./lib/soundList.js";
 
 const preloader = {
 
     imgs : {},
     animations: {},
+    song: {},
+    nombreSongsTotal: 0,
     nombreImagesTotal: 0,
     nombreAnimTotal: 0,
     font: {},
@@ -13,6 +16,7 @@ const preloader = {
         preloader.chargementImage();
         preloader.chargementAnimations();
         preloader.chargementFont();
+        preloader.chargementSons();
 
     },
 
@@ -34,6 +38,17 @@ const preloader = {
                 }
                 preloader.nombreImagesTotal +=1; // Compte le nombre d'image sencé êtré chargé pour la verif
             });
+        }
+    },
+
+    chargementSons: () => {
+        for(let i in soundList){
+            preloader.song = {
+                ...preloader.song,
+                [soundList[i]]: new Audio(`./lib/sound/${soundList[i]}.wav`)
+            }
+
+            preloader.nombreSongsTotal += 1;
         }
     },
 
@@ -62,7 +77,11 @@ const preloader = {
     },
 
     statuDuPreloader : () => {
-        if (preloader.verificationChargementImage() && preloader.verificationChargementAnimation()){
+        if (
+            preloader.verificationChargementImage()
+            && preloader.verificationChargementAnimation()
+            && preloader.verificationChargementSons()
+            ){
             return true;
         }else {
             return false;
@@ -99,6 +118,18 @@ const preloader = {
         // console.log(animationCharge, jsonCharge)
 
         return animationCharge === preloader.nombreAnimTotal && jsonCharge === preloader.nombreAnimTotal ? true : false;
+    },
+
+    verificationChargementSons: () => {
+        let sonCharge = 0;
+
+        for (let i in preloader.song){
+            if (preloader.song[i].readyState === 4){
+                sonCharge +=1;
+            }
+        }
+
+        return sonCharge === preloader.nombreSongsTotal;
     }
 
 }

@@ -16,14 +16,15 @@ class Hero extends Personnage{
 
     }
 
-    update = (gameSettings, map, intelligence, personnages) => {
+    update = (gameSettings, map, intelligence, personnages,song) => {
+
         this.personnages = personnages;
         this.wallPosition(map);
         if (!this.death){
-            this.intelligence(intelligence);
+            this.intelligence(intelligence, song);
             this.combat(personnages);
         }
-        this.gravity(gameSettings.gravity);
+        this.gravity(gameSettings.gravity, song);
         if (this.death){
             this.newAction = "death";
         }
@@ -40,6 +41,10 @@ class Hero extends Personnage{
                     personnages[key].posName.y === this.posName.y
                 ){
                     if (!this.hasKillAEnnemy && personnages[key].ennemy){
+                        this.sounds.sfx_sounds_damage1.volume = .1;
+                        this.sounds.sfx_sounds_high5.volume = .1;
+                        this.sounds.sfx_sounds_damage1.play();
+                        this.sounds.sfx_sounds_high5.play();
                         this.death = true;
                         this.newAction = "death"
                     }
@@ -52,7 +57,7 @@ class Hero extends Personnage{
         }
     }
 
-    intelligence = (intelligence) => {
+    intelligence = (intelligence, song) => {
 
         // IDLE
         if (
@@ -86,7 +91,7 @@ class Hero extends Personnage{
         // SAUT
         if (intelligence.up && (!this.onWallLeft && !this.onWallRight)){
             if (!this.jump){
-                this.upLoadAction("jump")
+                this.upLoadAction("jump", song)
             }
         }else if (this.wallDetect.foot.left || this.wallDetect.foot.right){
             this.jump = false;
@@ -139,7 +144,7 @@ class Hero extends Personnage{
         
     }
 
-    upLoadAction = (action) => {
+    upLoadAction = (action, song) => {
 
         switch(action){
             case "idle":
@@ -148,16 +153,18 @@ class Hero extends Personnage{
             case "walkLeft":
                 this.newAction = "walk"
                 this.direction = false;
-                this.wallDetect.hands.left && this.wallDetect.sholders.left? this.x = (Math.floor(this.x/32)*32)+25: this.move("left", this.moveSpeed);
+                this.wallDetect.hands.left && this.wallDetect.sholders.left? this.x = (Math.floor(this.x/32)*32)+25: this.move("left", this.moveSpeed, song);
                 this.onWallRight ? this.onWallRight = false : "";
                 break;
             case "walkRight":
                 this.newAction = "walk"
                 this.direction = true;
-                this.wallDetect.hands.right && this.wallDetect.sholders.right? this.x = (Math.floor(this.x/32)*32)+7:this.move("right", this.moveSpeed);
+                this.wallDetect.hands.right && this.wallDetect.sholders.right? this.x = (Math.floor(this.x/32)*32)+7:this.move("right", this.moveSpeed, song);
                 this.onWallLeft ? this.onWallLeft = false : "";
                 break;
             case "jump":
+                song.sfx_movement_jump10.volume = 0.2;
+                song.sfx_movement_jump10.play();
                 this.jump = true;
                 this.jumpPower = this.defaultJumpPower;
                 this.wallDetect.foot.left = false;
@@ -165,11 +172,11 @@ class Hero extends Personnage{
                 break;
             case "climbDown":
                 this.newAction = "climb";
-                this.move("down", this.moveSpeed * 0.7);
+                this.move("down", this.moveSpeed * 0.7, song);
                 break;
             case "climbUp":
                 this.newAction = "climb";
-                this.wallDetect.head.left && this.wallDetect.head.right ? "" : this.move("up", this.moveSpeed * 0.7);
+                this.wallDetect.head.left && this.wallDetect.head.right ? "" : this.move("up", this.moveSpeed * 0.7, song);
                 break;
             case "onWallRight":
                 this.newAction = "onWall"
@@ -193,9 +200,9 @@ class Hero extends Personnage{
         }
     }
 
-    move = (move, speed) => {
+    move = (move, speed, song) => {
 
-        if (move != "right" && move != "left") this.testKill(speed);
+        if (move != "right" && move != "left") this.testKill(speed, song);
 
         switch(move){
             case "up":
@@ -219,7 +226,7 @@ class Hero extends Personnage{
         }
     }
 
-    testKill = (speed) => {
+    testKill = (speed,song) => {
         if (this.action === "jump" && this.y + speed > this.y){
             for (let ennemy in this.personnages){
                 const perso = this.personnages[ennemy];
@@ -233,7 +240,7 @@ class Hero extends Personnage{
                             perso.headPosition.right.x,
                             perso.headPosition.left.y
                         )){
-                            perso.deathFunc();
+                            perso.deathFunc(song);
                             this.jumpPower = this.killJump;
                             this.chuteSpeed = 0;
                             this.hasKillAEnnemy = true;

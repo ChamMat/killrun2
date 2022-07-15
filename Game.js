@@ -1,11 +1,12 @@
 class Game {
-    constructor(gameStatu)
+    constructor(sounds)
     {
         this.gameStatu = "start";
         this.map = false;
         this.deathOfHero = false;
         this.newLevel = false;
         this.buttonFullScreenActive = false;
+        this.flag = false;
     }
 
     init = (gameStatu) => {
@@ -13,7 +14,7 @@ class Game {
         this.gameStatu === "game" ? this.map = true : this.map = false;
     }
 
-    update = (personnages, gameSpeed, map, keyBoardController, tactilController, fullScreen, fullScreenChange, userTerminalIsComputer) => {
+    update = (personnages, gameSpeed, map, keyBoardController, tactilController, fullScreen, fullScreenChange, userTerminalIsComputer, song) => {
         
         if (tactilController.x > 15 && tactilController.x < 50){
             if (tactilController.y > 50 && tactilController.y < 95){
@@ -61,15 +62,22 @@ class Game {
                 if (perso.name === "hero"){
 
                     if (userTerminalIsComputer){
-                        perso.update(gameSpeed, map, keyBoardController.keyDown, personnages);
+                        perso.update(gameSpeed, map, keyBoardController.keyDown, personnages, song);
                     }else {
-                        perso.update(gameSpeed, map, tactilController.keyDown, personnages);
+                        perso.update(gameSpeed, map, tactilController.keyDown, personnages, song);
                     }
 
                     if (perso.death){
                         setTimeout(() => {this.deathOfHero = true}, 1000);
                     }
                     if (perso.hadTheFlag){
+                        if (!this.flag){
+                            this.flag = true;
+                            song.sfx_sounds_powerup16.volume = .2;
+                            song.sfx_sound_neutral10.volume = .2;
+                            song.sfx_sounds_powerup16.play();
+                            song.sfx_sound_neutral10.play();
+                        }
                         for (let key2 in personnages){
                             if (personnages[key2].ennemy && !personnages[key2].death){
                                 const ennemy = personnages[key2];
@@ -88,7 +96,7 @@ class Game {
                         left:false,
                         right:false,
                     }
-                    perso.update(gameSpeed, map, personnages);
+                    perso.update(gameSpeed, map, personnages, song);
                 }
             }
             // if (perso.name === "bodyGuard"){

@@ -69,20 +69,22 @@ class Personnage {
         this.killJump = 14;
 
         this.direction = true;
+        this.sounds;
     }
 
-    init = (datas, mapLimite)=> {
+    init = (datas, mapLimite, sounds)=> {
+        this.sounds = sounds;
         this.json = datas;
         this.mapLimite[0] = mapLimite[0] - 32;
         this.mapLimite[1] = mapLimite[1];
     }
 
-    update = (gameSettings, map, intelligence) => {
+    update = (gameSettings, map, intelligence, song) => {
         if (this.enable){
             if (!this.death){
                 this.wallPosition(map);
                 this.intelligence(intelligence);
-                this.gravity(gameSettings.gravity);
+                this.gravity(gameSettings.gravity, song);
                 this.animation(gameSettings.gameSpeed);
                 this.updatePosition();  
             }else{
@@ -117,7 +119,7 @@ class Personnage {
 
             if (tile != undefined && tile.block){
                 if ((this.name === "hero" || this.mental === "alerte") && (direction === "left" || direction === "right") && tile.type === "door"){
-                    tile.openDoor();
+                    tile.openDoor(this.sounds);
                     return false;
                 }
                 return true;
@@ -156,10 +158,14 @@ class Personnage {
         
     }
 
-    gravity = (gravity) => {
+    gravity = (gravity, song) => {
         
         if (this.wallDetect.foot.left || this.wallDetect.foot.right){
             this.y = Math.floor(this.y /32)*32 +1;
+            if (this.chuteSpeed > 2){
+                song.sfx_movement_jump10_landing.volume = .5;
+                song.sfx_movement_jump10_landing.play();
+            }
             this.chuteSpeed = 0;
             this.jumpPower = 0;
         }else if (!this.onWallRight && !this.onWallLeft){

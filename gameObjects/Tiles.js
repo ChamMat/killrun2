@@ -25,7 +25,9 @@ class Tiles {
         this.timer = 0;
     }
 
-    openDoor = () => {
+    openDoor = (sound) => {
+        sound.sfx_movement_dooropen4.volume = .1
+        sound.sfx_movement_dooropen4.play();
         this.door = false;
         this.block = false;
         this.interval = setInterval(()=>{

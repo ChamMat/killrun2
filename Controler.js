@@ -67,6 +67,7 @@ class Controler {
         }
         this.imgs;
         this.animations;
+        this.sounds;
         this.level = 0;
         this.map;
         this.mapLimites = [0, 0];
@@ -203,9 +204,10 @@ class Controler {
             if(preloader.statuDuPreloader()){
                 this.imgs = preloader.imgs;
                 this.animations = preloader.animations;
+                this.sounds = preloader.song;
                 this.show = new Show(this.imgs, this.animations, levelDatas);
                 this.show.init();
-                this.game = new Game();
+                this.game = new Game(this.sounds);
                 clearInterval(this.interval);
                 this.startGame();
             }
@@ -236,7 +238,7 @@ class Controler {
 
                 for (let personnage in this.personnages){
                     let perso = this.personnages[personnage];
-                    perso.init(this.animations[perso.name].json.frames, [levelDatas[this.level].map[0].length * 32, levelDatas[this.level].map.length *32]);
+                    perso.init(this.animations[perso.name].json.frames, [levelDatas[this.level].map[0].length * 32, levelDatas[this.level].map.length *32], this.sounds);
                 }
 
                 this.game.init("game"); // Initialiser game directement au niveau du jeu (mode dev, mettre "start" en prod)
@@ -261,15 +263,15 @@ class Controler {
             if (this.game.newLevel){
                 this.level+=1;
                 clearInterval(this.interval);
-                this.game = new Game();
+                this.game = new Game(this.sounds);
                 this.startGame();
             }
             if (!this.game.deathOfHero){
-                this.game.update(this.personnages, gameSettings, this.map, this.keyBoardControllerDatas, this.tactilControllerDatas, this.fullScreen ,() => {this.fullScreen = !this.fullScreen}, this.userTerminalIsComputer);
+                this.game.update(this.personnages, gameSettings, this.map, this.keyBoardControllerDatas, this.tactilControllerDatas, this.fullScreen ,() => {this.fullScreen = !this.fullScreen}, this.userTerminalIsComputer, this.sounds);
                 this.draw();
             }else {
                 clearInterval(this.interval);
-                this.game = new Game();
+                this.game = new Game(this.sounds);
                 this.startGame();
             }
         }
