@@ -14,6 +14,7 @@ import Game from "./Game.js";
 import Show from "./Show.js";
 import tactilController from "./userInput/tactilController.js";
 import Menu from "./Menu.js";
+import EndGame from "./EndGame.js";
 
 class Controler {
     constructor(){
@@ -79,6 +80,7 @@ class Controler {
         this.show;
         this.game;
         this.menu;
+        this.endGame;
         this.gameObjects;
         this.personnages = {};
         this.secondBackground;
@@ -217,7 +219,7 @@ class Controler {
 
     startGame = () => {
 
-        if (this.level != 0){
+        if (this.level != 0 && this.level != 11){
             this.camera = levelDatas[this.level].camera;
 
             this.mapLimites = [(levelDatas[this.level].map[0].length)*32, (levelDatas[this.level].map.length)*32];
@@ -247,15 +249,21 @@ class Controler {
             }
         
         }
+
         if (this.level === 0){
             this.menu = new Menu();
         }
+
+        if (this.level === 11){
+            this.endGame = new EndGame();
+        }
+
         this.interval = setInterval(this.runGame, gameSettings.gameSpeed)
     }
 
     runGame = () => {
 
-        if (this.level != 0){
+        if (this.level != 0 && this.level != 11){
             if (this.keyBoardControllerDatas.keyDown.p){
                 clearInterval(this.interval);
                 console.log("stop");
@@ -288,6 +296,10 @@ class Controler {
             canva.textAlign = "left";
             canva.font = `10px "PressStart2P-Regular"`;
             canva.fillText(this.userAgent, 50, 50);
+        }
+
+        if (this.level === 11){
+            this.endGame.run();
         }
         
     }

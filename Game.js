@@ -73,8 +73,8 @@ class Game {
                     if (perso.hadTheFlag){
                         if (!this.flag){
                             this.flag = true;
-                            song.sfx_sounds_powerup16.volume = .2;
-                            song.sfx_sound_neutral10.volume = .2;
+                            song.sfx_sounds_powerup16.volume = .1;
+                            song.sfx_sound_neutral10.volume = .1;
                             song.sfx_sounds_powerup16.play();
                             song.sfx_sound_neutral10.play();
                         }
