@@ -95,44 +95,7 @@ class Controler {
 
     init = () => {
         this.canvas = document.querySelector("#GraphicsBox");
-        const body = document.querySelector("body");
-        const eventCatcher = document.querySelector("body");
-        body.addEventListener("keydown", this.handleEvent);
-        body.addEventListener("keyup", this.handleEvent);
-        eventCatcher.addEventListener("mousemove", this.handleEvent);
-        eventCatcher.addEventListener("mousedown", this.handleEvent);
-        eventCatcher.addEventListener("mouseup", this.handleEvent);
-        document.onfullscreenchange = () => {
-            this.fullScreen = !this.fullScreen;
-            this.tactilControllerDatas.fullScreen = this.fullScreen;
-        }
 
-        body.addEventListener("pointerdown", (evt) => {
-            evt.preventDefault();
-            evt.stopImmediatePropagation();
-            this.handleEvent(evt)
-        }, {passive:false}
-        );
-        body.addEventListener("pointermove", (evt) => {
-            evt.preventDefault();
-            evt.stopImmediatePropagation();
-            this.handleEvent(evt)
-        } , {passive:false});
-        body.addEventListener("pointerup", this.handleEvent);
-
-        body.addEventListener("touchstart", (evt)=> {
-            evt.preventDefault();
-            evt.stopImmediatePropagation();
-        }, {passive:false})
-        body.addEventListener("touchmove", (evt)=> {
-            evt.preventDefault();
-            evt.stopImmediatePropagation();
-        }, {passive:false})
-        body.addEventListener("touchend", (evt)=> {
-            evt.preventDefault();
-        }, {passive:false})
-
-        this.preloaderStart();
 
         this.userAgent = navigator.userAgent;
 
@@ -150,10 +113,18 @@ class Controler {
         }else {
             // document.querySelector("#arraw").style.display = "none"
         }
+
+        document.onfullscreenchange = () => {
+            this.fullScreen = !this.fullScreen;
+            this.tactilControllerDatas.fullScreen = this.fullScreen;
+        }
+
+        this.preloaderStart();
         
     }
 
     handleEvent = (evt) => {
+
         switch(evt.type){
             case "keydown":
                 this.keyBoardControllerDatas = keyBoardController(this.keyBoardControllerDatas, evt);
@@ -210,6 +181,39 @@ class Controler {
                 this.show = new Show(this.imgs, this.animations, levelDatas);
                 this.show.init();
                 this.game = new Game(this.sounds);
+                const body = document.querySelector("#gameBody");
+                const eventCatcher = document.querySelector("#EventCatcher");
+                eventCatcher.addEventListener("mousemove", this.handleEvent);
+                eventCatcher.addEventListener("mousedown", this.handleEvent);
+                eventCatcher.addEventListener("mouseup", this.handleEvent);
+                body.addEventListener("keydown", this.handleEvent);
+                body.addEventListener("keyup", this.handleEvent);
+
+
+        // EventCatcher.addEventListener("pointerdown", (evt) => {
+        //     evt.preventDefault();
+        //     evt.stopImmediatePropagation();
+        //     this.handleEvent(evt)
+        // }, {passive:false}
+        // );
+        // EventCatcher.addEventListener("pointermove", (evt) => {
+        //     evt.preventDefault();
+        //     evt.stopImmediatePropagation();
+        //     this.handleEvent(evt)
+        // } , {passive:false});
+        // EventCatcher.addEventListener("pointerup", this.handleEvent);
+
+        // EventCatcher.addEventListener("touchstart", (evt)=> {
+        //     evt.preventDefault();
+        //     evt.stopImmediatePropagation();
+        // }, {passive:false})
+        // EventCatcher.addEventListener("touchmove", (evt)=> {
+        //     evt.preventDefault();
+        //     evt.stopImmediatePropagation();
+        // }, {passive:false})
+        // EventCatcher.addEventListener("touchend", (evt)=> {
+        //     evt.preventDefault();
+        // }, {passive:false})
                 clearInterval(this.interval);
                 this.startGame();
             }
@@ -275,7 +279,7 @@ class Controler {
                 this.startGame();
             }
             if (!this.game.deathOfHero){
-                this.game.update(this.personnages, gameSettings, this.map, this.keyBoardControllerDatas, this.tactilControllerDatas, this.fullScreen ,() => {this.fullScreen = !this.fullScreen}, this.userTerminalIsComputer, this.sounds);
+                this.game.update(this.personnages, gameSettings, this.map, this.keyBoardControllerDatas, this.mouseControllerDatas, this.fullScreen ,() => {this.fullScreen = !this.fullScreen}, this.userTerminalIsComputer, this.sounds);
                 this.draw();
             }else {
                 clearInterval(this.interval);
@@ -285,21 +289,25 @@ class Controler {
         }
         
         if (this.level === 0){
-            this.menu.run(this.imgs["button"], this.tactilControllerDatas, () => {
+            this.menu.run(this.imgs["button"], this.mouseControllerDatas, () => {
                 this.level = 1;
                 clearInterval(this.interval);
                 this.startGame();
             });
 
-            const canva = document.querySelector("#GraphicsBox").getContext("2d");
-            canva.fillStyle = "#fff";
-            canva.textAlign = "left";
-            canva.font = `10px "PressStart2P-Regular"`;
-            canva.fillText(this.userAgent, 50, 50);
+            // const canva = document.querySelector("#GraphicsBox").getContext("2d");
+            // canva.fillStyle = "#fff";
+            // canva.textAlign = "left";
+            // canva.font = `10px "PressStart2P-Regular"`;
+            // canva.fillText(this.userAgent, 50, 50);
         }
 
         if (this.level === 11){
-            this.endGame.run();
+            this.endGame.run(this.mouseControllerDatas, () => {
+                this.level = 1;
+                clearInterval(this.interval);
+                this.startGame();
+            });
         }
         
     }

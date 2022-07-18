@@ -59,7 +59,7 @@ const levelDatas = [
         backgroundAnimation: [""],
         fog: ["fog"],
         camera: true,
-        text: ["Level 1", "Use A and D for walk", "Use W and S for climb wall"],
+        text: ["Level 1", "Use A and D for walk", "Use W and S for climb wall", "Click on square on left for fullscreen"],
     },
     {
         //2 test
