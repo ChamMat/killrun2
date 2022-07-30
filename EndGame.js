@@ -16,10 +16,10 @@ class EndGame {
         this.canvas.fillStyle = "#FFF";
         this.canvas.textAlign = "center";
         this.canvas.font = `50px PressStart2P-Regular`;
-        this.canvas.fillText("Game Over", 448, 175);
+        this.canvas.fillText("Congratulations", 448, 175);
         this.canvas.font = `24px PressStart2P-Regular`;
-        this.canvas.fillText("Thank you for playing my game", 448, 250);
-        this.canvas.fillText("I hope you have enjoy!", 448, 300)
+        this.canvas.fillText("Thank you for playing", 448, 250);
+        this.canvas.fillText("I hope you enjoyed it!", 448, 300)
 
         
         const window = {w: 892, h: 596}
@@ -75,7 +75,7 @@ class EndGame {
         this.canvas.strokeRect(center.x - button.w/2, center.y - button.h /2, button.w, button.h);
         this.canvas.textAlign = "center";
         this.canvas.font = `30px "PressStart2P-Regular"`;
-        this.canvas.fillText("Restart ?", center.x, center.y+15);
+        this.canvas.fillText("Play again ?", center.x, center.y+15);
 
     }
 }

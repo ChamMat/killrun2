@@ -59,7 +59,7 @@ const levelDatas = [
         backgroundAnimation: [""],
         fog: ["fog"],
         camera: true,
-        text: ["Level 1", "Use A and D for walk", "Use W and S for climb wall", "Click on square on left for fullscreen"],
+        text: ["Level 1", "Use A to go left, D to go right", "Use W to jump or climb, S to go down", "Click on the blinking target on the left for fullscreen mode"],
     },
     {
         //2 test
@@ -89,7 +89,7 @@ const levelDatas = [
         backgroundAnimation: [""],
         fog: ["fog"],
         camera: true,
-        text: ["Level 2", "Ennemys can see you", "jump on there head for kill them", "or just dodge them"],
+        text: ["Level 2", "Enemies can see you", "Jump on their head or avoid them"],
     },
     {
         // 3
@@ -254,7 +254,7 @@ const levelDatas = [
         backgroundAnimation: [""],
         fog: ["fog"],
         camera: true,
-        text: ["Level 5", "If a ennemy spot you", "he can ask help from other ennemy"],
+        text: ["Level 5", "If an enemy spots you", "he will call for help from the others"],
     },
     {
         //6
@@ -284,7 +284,7 @@ const levelDatas = [
         backgroundAnimation: [""],
         fog: ["fog"],
         camera: true,
-        text: ["Level 6", "Dont kill them all", "just bouncing on them for reach the goal"],
+        text: ["Level 6", "No need to kill them all", "just bounce on them to reach the goal"],
     },{
         //7
         map: 
@@ -313,7 +313,7 @@ const levelDatas = [
         backgroundAnimation: [""],
         fog: ["fog"],
         camera: true,
-        text: ["Level 7", "Same technique", "just more harder"],
+        text: ["Level 7"],
     },
     {
         //8
@@ -344,7 +344,7 @@ const levelDatas = [
         backgroundAnimation: [""],
         fog: ["fog"],
         camera: true,
-        text: ["Level 8", "Jump and run"],
+        text: ["Level 8"],
     },
     {
         // 9
